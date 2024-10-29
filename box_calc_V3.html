@@ -1,0 +1,98 @@
+//https://github.com/JegorovsI/Patstavigais_darbs_1.git
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dose_recalculator</title>
+    <meta charset="UTF-8">
+    <html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylecalc.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="block drug-prescribed">
+            <div class="recepte">
+                <form class="receptes-dati">
+                    <h>Rp.  </h>
+                    <p> Zāles</p>
+                    <input type="" name="" id="koncentracija_kas_izrakstita_mgSV">
+                    <label>mg(SV)</label>
+                    <p id="novakt-pie-tabl-opcijas">/</p><br>
+                    <input type="" name="" id="koncentracija_kas_izrakstita_uz_ml" value="5">
+                    <select id="izrakstits_mlVaiTabl" onchange="hideInput(this,'koncentracija_kas_izrakstita_uz_ml', 'novakt-pie-tabl-opcijas')">
+                        <option>ml</option>
+                        <option>tabl</option>
+                    </select><br>
+
+                    <p> Daudzums: </p>
+                    <input type="" name="" id="vienibu_skaits_iepakojuma_kas_izrakstits">
+                    <label class="izrakstits_zalu_forma">ml, </label>
+                    <input type="" name="" id="iepakojumu_skaits_kas_izrakstits" value="1">
+                    <label>orig.</label><br><br>
+
+                    <h>D.s.  </h>
+                    <p>Pa </p>
+                    <input type="" name="" id="lietot_pa_izrakstits">
+                    <select id="lietot_vienibas_izrakstits">
+                        <option value="ml">ml</option>
+                        <option value="mg">mg</option>
+                        <option value="SV">SV</option>
+                        <option value="SV">tab</option>
+                    </select><br>
+
+                    <input type="" name="" id="lietot_reizes_diena_izrakstits">
+                    <label> reizes dienā, </label>
+                    <input type="" name="" id="lietot_dienas_izrakstits">
+                    <label>dienas. </label>
+                </form>
+            </div>
+        </div>
+        <div class="block drug-available">
+            <div class="cube">
+                <div class="side-face front">
+                    <div class="nosaukums">
+                        <h>zāļu nosaukums</h>
+                    </div>
+                    <div class="koncentracija">
+                        <form>
+                            <input type="" name="" style="width: 35%" id="pieejams_mgSV_uz">
+                            <label>mg(SV)</label>
+                            <br>
+                            <p>/</p>
+                            <input type="" name="" style="width: 10%" id="pieejams_uz_mlVaiTabl" value="5">
+                            <select id="pieejams_mlVaiTabl">
+                                <option>ml</option>
+                                <option>tabl</option>
+                            </select>
+                        </div>
+                        <div class="tilpums">
+                            <p class="pieejams_tilpums">Tilpums: </p>
+                            <input type="" name="" style="width: 10%" id="pieejams_daudzums_iepakojuma">
+                            <label class="pieejams_mlVaiTabl">ml</label>
+                        </form>
+                    </div>
+                </div>
+                <div class="side-face back"></div>
+                <div class="side-face left"></div>
+                <div class="side-face right"></div>
+                <div class="top-bottom-face top"></div>
+                <div class="top-bottom-face bottom"></div>
+            </div>
+        </div>
+        <div class="block drug-used">
+            <div>
+                <h>lietošanas norādījumi...</h>
+            </div>
+            <div>
+                <button id="aprekinat" onclick="aprekinat()">Aprēķināt</button>
+            </div>
+            <div class="lietosana">
+                <h id="result"></h>
+            </div>
+            <!-- Add content for the third block here -->
+        </div>
+    </div>
+    <script src="calcscript.js"></script>
+</body>
+
+

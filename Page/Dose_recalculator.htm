@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Dose_recalculator</title>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Dose_recalculator_files/stylecalc.css">
+<script type="text/javascript"> 
+/* 
+ * Chrome token signing extension 
+ * 
+ * This library is free software; you can redistribute it and/or 
+ * modify it under the terms of the GNU Lesser General Public 
+ * License as published by the Free Software Foundation; either 
+ * version 2.1 of the License, or (at your option) any later version. 
+ * 
+ * This library is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
+ * Lesser General Public License for more details. 
+ * 
+ * You should have received a copy of the GNU Lesser General Public 
+ * License along with this library; if not, write to the Free Software 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA 
+ */ 
+ 
+// Promises 
+var _eid_promises = {}; 
+// Turn the incoming message from extension 
+// into pending Promise resolving 
+window.addEventListener("message", function(event) { 
+    if(event.source !== window) return; 
+    if(event.data.src && (event.data.src === "eparaksts-background.js")) { 
+        console.log("Page received: "); 
+        console.log(event.data); 
+        // Get the promise 
+        if(event.data.nonce) { 
+            var p = _eid_promises[event.data.nonce]; 
+            // resolve 
+            if(p !== undefined) { 
+                if(event.data.result === "ok") { 
+                    if(event.data.signature !== undefined) { 
+                        p.resolve({hex: event.data.signature}); 
+                    } else if(event.data.version !== undefined && event.data.extension !== undefined) { 
+                        p.resolve(event.data.version + "/js" + event.data.extension); 
+                    } else if(event.data.cert !== undefined) { 
+                        p.resolve({hex: event.data.cert}); 
+                    } else { 
+                        console.log("No idea how to handle message"); 
+                        console.log(event.data); 
+                    } 
+                } else { 
+                    // reject 
+                    p.reject(new Error(event.data.result)); 
+                } 
+            } else { 
+            	console.log("Undefined promise"); 
+            } 
+            delete _eid_promises[event.data.nonce]; 
+        } else { 
+            console.log("No nonce in event msg"); 
+        } 
+    } 
+}, false); 
+ 
+ 
+function eParakstsTokenSigning() { 
+    function nonce() { 
+        var val = ""; 
+        var hex = "abcdefghijklmnopqrstuvwxyz0123456789"; 
+        for(var i = 0; i < 16; i++) val += hex.charAt(Math.floor(Math.random() * hex.length)); 
+        return val; 
+    } 
+ 
+    function messagePromise(msg) { 
+        return new Promise(function(resolve, reject) { 
+            // amend with necessary metadata 
+            msg["nonce"] = nonce(); 
+            msg["src"] = "eparaksts-page.js"; 
+            // send message 
+            window.postMessage(msg, "*"); 
+            // and store promise callbacks 
+            _eid_promises[msg.nonce] = { 
+                resolve: resolve, 
+                reject: reject 
+            }; 
+        }); 
+    } 
+    this.getCertificate = function(options) { 
+        var msg = {type: "CERT", lang: options.lang, operation: options.operation}; 
+        console.log("getCertificate()"); 
+        return messagePromise(msg); 
+    }; 
+    this.sign = function(cert, hash, options) { 
+        var msg = {type: "SIGN", cert: cert.hex, hash: hash.hex, hashtype: hash.type, lang: options.lang, operation: options.operation}; 
+        console.log("sign()"); 
+        return messagePromise(msg); 
+    }; 
+    this.getVersion = function() { 
+        console.log("getVersion()"); 
+        return messagePromise({ 
+            type: "VERSION" 
+        }); 
+    }; 
+} 
+</script></head>
+<body>
+    <div class="main-container">
+        <div class="block drug-prescribed">
+            <div class="recepte">
+                <form class="receptes-dati">
+                    <h>Rp.  </h>
+                    <p> Zāles</p>
+                    <input type="" name="" id="koncentracija_kas_izrakstita_mgSV" value="2000000">
+                    <label>mg(SV)</label>
+                    <p id="novakt-pie-tabl-opcijas">/</p><br>
+                    <input type="" name="" id="koncentracija_kas_izrakstita_uz_ml" value="5">
+                    <select id="izrakstits_mlVaiTabl" onchange="hideInput(this,'koncentracija_kas_izrakstita_uz_ml', 'novakt-pie-tabl-opcijas')">
+                        <option selected="selected">ml</option>
+                        <option>tabl</option>
+                    </select><br>
+
+                    <p> Daudzums: </p>
+                    <input type="" name="" id="vienibu_skaits_iepakojuma_kas_izrakstits" value="1000">
+                    <label class="izrakstits_zalu_forma">ml, </label>
+                    <input type="" name="" id="iepakojumu_skaits_kas_izrakstits" value="1">
+                    <label>orig.</label><br><br>
+
+                    <h>D.s.  </h>
+                    <p>Pa </p>
+                    <input type="" name="" id="lietot_pa_izrakstits" value="2000000">
+                    <select id="lietot_vienibas_izrakstits">
+                        <option value="ml" selected="selected">ml</option>
+                        <option value="mg">mg</option>
+                        <option value="SV">SV</option>
+                        <option value="SV">tab</option>
+                    </select><br>
+
+                    <input type="" name="" id="lietot_reizes_diena_izrakstits">
+                    <label> reizes dienā, </label>
+                    <input type="" name="" id="lietot_dienas_izrakstits" value="22">
+                    <label>dienas. </label>
+                </form>
+            </div>
+        </div>
+        <div class="block drug-available">
+            <div class="cube">
+                <div class="side-face front">
+                    <div class="nosaukums">
+                        <h>zāļu nosaukums</h>
+                    </div>
+                    <div class="koncentracija">
+                        <form>
+                            <input type="" name="" style="width: 35%" id="pieejams_mgSV_uz">
+                            <label>mg(SV)</label>
+                            <br>
+                            <p>/</p>
+                            <input type="" name="" style="width: 10%" id="pieejams_uz_mlVaiTabl" value="5">
+                            <select id="pieejams_mlVaiTabl">
+                                <option selected="selected">ml</option>
+                                <option>tabl</option>
+                            </select>
+                        </form></div>
+                        <div class="tilpums">
+                            <p class="pieejams_tilpums">Tilpums: </p>
+                            <input type="" name="" style="width: 10%" id="pieejams_daudzums_iepakojuma">
+                            <label class="pieejams_mlVaiTabl">ml</label>
+                        
+                    </div>
+                </div>
+                <div class="side-face back"></div>
+                <div class="side-face left"></div>
+                <div class="side-face right"></div>
+                <div class="top-bottom-face top"></div>
+                <div class="top-bottom-face bottom"></div>
+            </div>
+        </div>
+        <div class="block drug-used">
+            <div>
+                <h>lietošanas norādījumi...</h>
+            </div>
+            <div>
+                <button id="aprekinat" onclick="aprekinat()">Aprēķināt</button>
+            </div>
+            <div class="lietosana">
+                <h id="result"></h>
+            </div>
+            <!-- Add content for the third block here -->
+        </div>
+    </div>
+    <script src="Dose_recalculator_files/calcscript.js"></script>
+
+
+
+</body></html>

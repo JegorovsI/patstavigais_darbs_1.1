@@ -1,0 +1,206 @@
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: whitesmoke;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            width: 90%;
+            height: 90%;
+/*            justify-content: space-between;*/
+/*            justify-content: center;*/
+        }
+
+        .block {
+            flex: 1;
+            display: flex;
+            margin: 0 10px;
+            border: 3px solid black;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            overflow: visible; /* Added to contain the pseudo-element within the block */
+            background-color: white;
+        }
+/*novakt-pie-tabl-opcijas-2*/
+        .block::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            opacity: 0.5; /* Set opacity here */
+            z-index: -1; /* Place it behind the other content */
+        }
+
+        .drug-prescribed::before {
+            position: absolute;
+            background-image: url('KN1135_PAGE_1.PNG');
+            z-index: 0;
+        }
+
+        .recepte {
+            position: absolute;
+            z-index: 1; /* Ensure content is above the pseudo-element */
+        }
+
+        .receptes-dati {
+/*            position: relative;*/
+            top: 60%;
+            height: auto;
+            width: 88%;
+
+            transform: translate(40%, 40%);
+/*            float: right;*/
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+/*            padding-left: 30px;*/
+            margin: 5px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            text-align: right;
+        } 
+        .receptes-dati h {
+/*            align-items: left;*/
+            position: absolute;
+            margin-right: 50px;
+            left: 10px;
+            font-size: 26px;
+        }
+
+        .receptes-dati * {
+            display: inline-block;
+            font-size: 18px;
+        }
+        #koncentracija_kas_izrakstita_mgSV {
+            width: 70px;
+        }
+        #koncentracija_kas_izrakstita_uz_ml {
+            width: 20px;
+        }
+        #vienibu_skaits_iepakojuma_kas_izrakstits {
+            width: 50px;
+        }
+        #iepakojumu_skaits_kas_izrakstits {
+            width: 20px;
+        }
+        #lietot_pa_izrakstits {
+            width: 70px;
+        }
+        #lietot_reizes_diena_izrakstits {
+            width: 20px;
+        }
+        #lietot_dienas_izrakstits {
+            width: 20px;
+        }
+
+
+
+
+/*        .receptes-dati-right {
+            margin-left: 50%;
+        }*/
+
+        .receptes-dati h {
+            font-weight: bolder;
+        }
+
+        .cube {
+            width: 200px;
+            height: 350px;
+            transform-style: preserve-3d;
+            transform: rotateX(-15deg) rotateY(10deg);
+        }
+
+
+        .side-face, .top-bottom-face {
+            position: absolute;
+            background-color: rgba(255, 250, 240);
+            border: 1px solid grey;
+        }
+
+        .side-face {
+            width: 200px;
+            height: 350px;
+        }
+
+        .top-bottom-face {
+            width: 200px;
+            height: 200px;
+            background-color: rgba(255, 253, 248);
+        }
+
+        .front div {
+            display: flex;
+            width: 98%;
+            height: 33%;
+        }
+
+        .nosaukums {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .koncentracija {
+            text-align: right;
+        }
+
+        .koncentracija * {
+            display: inline-block;
+            margin: 5pt 2pt auto auto;
+        }
+
+        .tilpums {
+            align-items: center;
+            justify-content: right;
+        }
+
+        .tilpums * {
+            margin-right: 5pt;
+        }
+
+        .drug-used {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .front  { transform: translateZ(100px); }
+        .back   { transform: rotateY(180deg) translateZ(100px); }
+        .left   { transform: rotateY(-90deg) translateZ(100px);
+                background-color: rgba(245, 240, 230); }
+        .right  { transform: rotateY(90deg) translateZ(100px); }
+        .top    { transform: rotateX(90deg) translateZ(100px); }
+        .bottom { transform: rotateX(-90deg) translateZ(-100px); }
+
+        @keyframes rotate {
+            from { transform: rotateX(-30deg) rotateY(-45deg); }
+            to { transform: rotateX(-30deg) rotateY(315deg); }
+        }
+
+        .drug-used {
+            display: flex;
+            justify-content: space-evenly;
+            flex-direction: column;
+            padding-top: 15%;
+            padding-bottom: 15%;
+        }
+
+        .drug-used  div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+/*            border: 1px solid black;*/
+            width: 100%;
+/*            height: 33%;*/
+        }
+
+        .lietosana {
+/*            align-items: end;*/
+        }
+        .hidden {
+            visibility: hidden;
+        }
